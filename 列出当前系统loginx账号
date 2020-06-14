@@ -1,0 +1,13 @@
+#!/bin/bash
+# 判断多少用户可以logion
+# by lumia98@vip.qq.com
+
+for user in $(awk -F ':' '{print $1}' /etc/passwd);do #列出所有用户名
+    # 判断用户是不是属于/sbin/nologin
+    if [ "$( cat /etc/passwd|grep "^${user}"|awk -F ':' '{print $NF}')" = '/sbin/nologin' ];then
+        echo $user >> nologin.txt
+    else
+        echo $user >> login.txt
+    fi
+done
+wc –l nologin.txt login.txt
