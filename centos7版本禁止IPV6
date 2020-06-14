@@ -1,0 +1,9 @@
+一、vim /etc/modprobe.d/disable-ipv6.conf(名字随便起)（RHEL6.0之后没有了/etc/modprobe.conf这个文件）
+    输入：install ipv6 /bin/true
+二、vim /etc/sysconfig/network在最后增加一句：IPV6INIT=no
+[root@manager ~]# cat /etc/sysconfig/network
+    IPV6INIT=no
+三、禁用ipv6的iptables
+    chkconfig ip6tables off
+    
+四、重启。
