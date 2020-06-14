@@ -1,0 +1,18 @@
+#!/bin/bash
+#时间同步脚本
+#by lumia98@vip.qq.com
+
+sync_date=$(rpm -qa|grep ntpdate|awk -F '-' '{print $1}')
+#
+if [ ! ${sync_date} ];then
+    yum install ${sync_date} -y
+fi
+
+#删除现有的localtime,创建软连接
+rm -rf /etc/localtime
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+#
+where_ntp=$(which ntpdate)
+where_hw=$(which hwclock)
+#
+${where_ntp} ntp.aliyun.com >/dev/null 2>&1 && ${where_hw} -w
