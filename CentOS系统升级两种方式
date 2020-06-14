@@ -1,0 +1,5 @@
+#不升级centos7版本，但是升级内核和软件更新
+yum update --exclude=centos-release* --exclude=initscripts -y
+
+#不升级内核及系统版本，更新所有软件
+yum update --exclude=centos-release* --exclude=kernel*  --exclude=initscripts -y
