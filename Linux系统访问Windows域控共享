@@ -1,0 +1,21 @@
+#!/bin/bash
+#自动挂载共享
+
+#By：lumia98@vip.qq.com
+#date: 2018-03-28
+
+export PATH=/opt/app/mysql/dir/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin
+#
+user='sy2log'            #windows服务器域账号
+dm='j2.com'              #windows域
+pwd='syslog112.com'      #windows服务器域账号密码    
+desc="//17.211.3.202/Backups"            #windows服务器共享目录
+local="/mnt/backup"                      #Linux挂载windows共享的目录
+#开始挂载
+mount -t cifs -o username=$user,domain=$dm,password=$pwd,rw,file_mode=0777,dir_mode=0777,uid=0,gid=0 $desc $local
+if [ $? == 0 ];then
+    echo $(date) "挂载成功!" >> /tmp/mount.log
+fi
+
+#放到 /etc/rc.d/init.d/mount.sh,然后开机/etc/rc.local
+#卸载umount 本地挂载路径
