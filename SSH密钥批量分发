@@ -1,0 +1,18 @@
+#!/bin/bash
+# 批量分发ssh
+# by lumia98@vip.qq.com
+
+yum install sshpass -y
+
+ssh-keygen -f ~/.ssh/id_rsa -P '' -q
+
+# /tmp/ip.txt 包含了需要分发的服务器ip地址
+
+for ip in `cat /tmp/ip.txt`
+do
+  sshpass -p123456 ssh-copy-id -f -i ~/.ssh/id_rsa.pub "-o strictHostkeyChecking=no" $ip
+
+done
+
+
+# -p123456 数字是需要分发ip服务器的密码，默认root
