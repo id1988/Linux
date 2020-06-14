@@ -1,0 +1,7 @@
+sed -i.bak '/# End of file/i*\t soft\t nofile\t 65535\n*\t hard\t nofile\t 65535\n*\t soft\t nproc\t 65535\n*\t hard\t nproc\t 65535' /etc/security/limits.conf
+
+
+不重启系统的情况打开
+echo "ulimit -HSn 65536" >> /etc/profile
+echo "ulimit -HSn 65536" >> /etc/rc.local
+source /etc/profile
