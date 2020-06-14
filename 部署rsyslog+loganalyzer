@@ -1,0 +1,49 @@
+一、请先部署lnmp或者lamp，这里不写了。
+
+防火墙配置
+     iptables -I INPUT -p tcp --dport 514 -m comment --comment "accept for rsyslog" -j ACCEPT
+     iptables -I INPUT -p udp --dport 514 -m comment --comment "accept for rsyslog" -j ACCEPT
+
+
+二、查看服务器是否安装了rsyslog，默认都看着了
+
+    rpm -qa|grep rsyslog
+
+三、安装 rsyslog连接MySQL数据库的模块
+
+    yum install rsyslog-mysql –y
+四、导入rsyslog数据库文件到MySQL
+  
+   cd /usr/share/doc/rsyslog-mysql-版本号
+   mysql -uroot -p < mysql-createDB.sql
+
+
+五、创建rsyslog数据库账户
+    
+    grant all on Syslog.* to rsyslog@'localhost' identified by 'passrsyslog';
+
+
+六、配置rsyslog
+  
+  cp /etc/rsyslog.conf  /etc/rsyslog.conf.bak
+  vim  /etc/rsyslog.conf
+    $ModLoad imudp     #开启协议
+    $UDPServerRun 514  #开启端口
+    $ModLoad ommysql   #启用模块
+    *.* :ommysql:localhost,Syslog,rsyslog,rsyslog
+
+    #localhost：数据库的地址
+    #Syslog：数据库名
+    #rsyslog：连接数据库Syslog的账号
+    #passrsyslog ：rsyslog账号的密码
+
+七、安装LogAnalyzer，把LogAnalyzer包解压，然后放到apache或者nginx的web包目录
+    cd /opt/soft
+    wget https://download.adiscon.com/loganalyzer/loganalyzer-4.1.10.tar.gz
+    tar xf loganalyzer-4.1.10.tar.gz
+    cd loganalyzer-4.1.10
+    cp -rf src/* /opt/www/html/loganalyzer
+    cp -rf contrib/* /opt/www/html/loganalyzer
+八、启动服务
+    
+    rsyslog、mysqld、httpd
