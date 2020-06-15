@@ -14,7 +14,8 @@ chattr +a -R /var/log/hislog
 #定义保存的命令日志文件
 export HISTTIMEFORMAT='%F %T '
 #定义命令日志格式
-export PROMPT_COMMAND='user=$(who am i | sed "s/[ ][ ]*/ /g"); history 1 | { read x date time cmd; echo "${date} ${time} ${user} ${cmd} $(whoami)";} >> $HISTFILE'
+export PROMPT_COMMAND='user=$(who am i | sed "s/[ ][ ]*/ /g"); history 1 \
+| { read x date time cmd; echo "${date} ${time}|${user}|$(whoami)| ${cmd} ";} >> $HISTFILE'
 
 
 # ${date} ${time} 当前操作命令时间
