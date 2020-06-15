@@ -1,0 +1,22 @@
+#!/bin/bash
+# By liush
+# 记录用户执行命令及IP地址
+# 脚本放/etc/profile.d/history.sh 或者/etc/profile
+# source /etc/profile 生效;
+# 创建目录
+[ -d /var/log/hislog ] || mkdir -p /var/log/hislog
+# 创建存放日志文件
+export HISTFILE="/var/log/hislog/$(date '+%F').his"
+# 权限（普通用户也可以写入记录）
+umask 000 $HISTFIE
+# 禁止用户删除权限;取消sudo chattr -a
+chattr +a -R /var/log/hislog
+#定义保存的命令日志文件
+export HISTTIMEFORMAT='%F %T '
+#定义命令日志格式
+export PROMPT_COMMAND='user=$(who am i | sed "s/[ ][ ]*/ /g"); history 1 | { read x date time cmd; echo "${date} ${time} ${user} ${cmd} $(whoami)";} >> $HISTFILE'
+
+
+# ${date} ${time} 当前操作命令时间
+# ${user} 登录用户
+# $(whoami) 当前执行命令的用户
