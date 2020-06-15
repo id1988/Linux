@@ -1,5 +1,5 @@
 #!/bin/bash
-# By liush
+# By lumia98@vip.qq.com
 # 记录用户执行命令及IP地址
 # 脚本放/etc/profile.d/history.sh 或者/etc/profile
 # source /etc/profile 生效;
